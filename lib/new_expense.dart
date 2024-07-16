@@ -1,6 +1,6 @@
 import 'package:expense_tracker/expense.dart';
 import 'package:expense_tracker/homepage.dart';
-import 'package:expense_tracker/sqlfite/sqflife_helper.dart';
+import 'package:expense_tracker/data/sqlfite/sqflife_helper.dart';
 import 'package:flutter/material.dart';
 
 class NewExpense extends StatefulWidget {
