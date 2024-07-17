@@ -2,6 +2,7 @@ import 'package:expense_tracker/expense.dart';
 import 'package:expense_tracker/homepage.dart';
 import 'package:expense_tracker/data/sqlfite/sqflife_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewExpense extends StatefulWidget {
   const NewExpense({super.key, required this.onAddExpense});
@@ -14,6 +15,8 @@ class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
   final _subTitleController = TextEditingController();
   final _amountController = TextEditingController();
+  final _formatterAmount = NumberFormat.decimalPattern();
+
   DateTime? _selectedDate;
   Category _selectedCategory = Category.Food;
   void _presentDatePicker() async {
@@ -30,9 +33,11 @@ class _NewExpenseState extends State<NewExpense> {
   }
 
   void _submitExpenseData() {
-    final enteredAmount = double.tryParse(_amountController
-        .text); // tryParse("Hello") => null; tryParse("1.12") => 1.12
-    final ammountInvalid = enteredAmount == null || enteredAmount <= 0;
+    final enteredAmount = double.tryParse(_amountController.text.replaceAll(
+        ',', '')); // tryParse("Hello") => null; tryParse("1.12") => 1.12
+    print("giá trị: ${enteredAmount}");
+
+    final ammountInvalid = enteredAmount == null || enteredAmount <= 1000;
     if (_titleController.text.isEmpty ||
         ammountInvalid ||
         _selectedDate == null) {
@@ -119,6 +124,22 @@ class _NewExpenseState extends State<NewExpense> {
                 child: TextField(
                   controller: _amountController,
                   keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    if (value.isNotEmpty) {
+                      String cleanValue = value.replaceAll(',', '');
+
+                      final parsedValue = double.tryParse(cleanValue) ?? 0;
+                      final formattedValue =
+                          _formatterAmount.format(parsedValue);
+                      _amountController.value = TextEditingValue(
+                        text: formattedValue,
+                        selection: TextSelection.collapsed(
+                          offset: formattedValue.length,
+                        ),
+                      );
+                      print("giá trị formatted ${_formatterAmount}");
+                    }
+                  },
                   maxLength: 50,
                   decoration: InputDecoration(label: Text('vnđ')),
                 ),

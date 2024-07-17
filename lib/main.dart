@@ -18,7 +18,7 @@ class myExpense extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: HomePage.id,
       routes: {
-        HomePage.id: (context) => HomePage(),
+        HomePage.id: (context) => const HomePage(),
         Totalexpense.id: (context) => Totalexpense(),
       },
     );

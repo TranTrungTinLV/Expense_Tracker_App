@@ -1,5 +1,6 @@
 import 'package:expense_tracker/expense.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ExpenseItems extends StatelessWidget {
   const ExpenseItems(
@@ -9,11 +10,14 @@ class ExpenseItems extends StatelessWidget {
   final Expense expense;
   @override
   Widget build(BuildContext context) {
+    // final formatter = NumberFormat('#,##0.000', 'vi_VN');
+    final formatter = NumberFormat.decimalPattern();
     return Container(
       margin: EdgeInsets.only(left: 15, right: 15),
-      padding: EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.symmetric(vertical: 20),
       decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
+          // border: Border(bottom: BorderSide(width: 1, color: Colors.grey))
+          ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,7 +55,7 @@ class ExpenseItems extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  expense.amount.toStringAsFixed(2),
+                  "${formatter.format(expense.amount)}đ",
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0),
                 ),
                 Text(

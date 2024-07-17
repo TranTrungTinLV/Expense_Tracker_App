@@ -7,6 +7,7 @@ import 'package:expense_tracker/screen/TotalExpense.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class HomePage extends StatefulWidget {
   static String id = 'home_page';
@@ -78,6 +79,7 @@ class _HomePageState extends State<HomePage> {
         // ),
         backgroundColor: const Color(0xFFF5F6F7),
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           toolbarHeight: 80.0,
           title: const Padding(
               padding: EdgeInsets.only(top: 16, left: 16),

@@ -61,7 +61,7 @@ class _EmptyCardState extends State<EmptyCard> {
               stops: <double>[0, 1],
               colors: !_isTapped
                   ? [Colors.white, Colors.white]
-                  : [Color(0xff2fdaff), Color(0xff0E33F3)],
+                  : [Colors.white, Colors.white],
             ),
             // color: widget.cardCoulor,
             borderRadius: BorderRadius.circular(20.0),
@@ -89,7 +89,7 @@ class _EmptyCardState extends State<EmptyCard> {
                     children: [
                       Icon(
                         widget.icon,
-                        color: !_isTapped ? Color(0xFF242D35) : Colors.white,
+                        color: !_isTapped ? Color(0xFF242D35) : Colors.black,
                       ),
                       Container(
                         height: 8,
@@ -99,7 +99,7 @@ class _EmptyCardState extends State<EmptyCard> {
                         style: TextStyle(
                             fontSize: 18.0,
                             color:
-                                !_isTapped ? Color(0xFF242D35) : Colors.white),
+                                !_isTapped ? Color(0xFF242D35) : Colors.black),
                       ),
                     ],
                   )),
@@ -107,7 +107,7 @@ class _EmptyCardState extends State<EmptyCard> {
                   style: TextStyle(
                       fontSize: 24.0,
                       letterSpacing: 0.32,
-                      color: !_isTapped ? Color(0xFF242D35) : Colors.white)),
+                      color: !_isTapped ? Color(0xFF242D35) : Colors.black)),
             ],
           ),
         ),
