@@ -19,18 +19,18 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<Expense> _registeredExpense = [
-    Expense("haha",
-        title: "cc",
-        date: DateTime.now(),
-        amount: 19.99,
-        source: "Levi",
-        category: Category.Food),
-    Expense("Food",
-        title: "cooocooo",
-        date: DateTime.now(),
-        amount: 19.99,
-        source: "Tintran",
-        category: Category.Advertising),
+    // Expense("haha",
+    //     title: "cc",
+    //     date: DateTime.now(),
+    //     amount: 19.99,
+    //     source: "Levi",
+    //     category: Category.Food),
+    // Expense("Food",
+    //     title: "cooocooo",
+    //     date: DateTime.now(),
+    //     amount: 19.99,
+    //     source: "Tintran",
+    //     category: Category.Advertising),
   ];
 
   void _addExpense(Expense expense) {
@@ -86,8 +86,12 @@ class _HomePageState extends State<HomePage> {
               child: Text(
                 'Overview',
                 style: TextStyle(fontSize: 24.0),
+                textAlign: TextAlign.start,
               )),
           actions: <Widget>[
+            Container(
+                // width: 10000,
+                ),
             Container(
               padding: const EdgeInsets.only(top: 20, right: 30),
               child: const CircleAvatar(

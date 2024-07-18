@@ -83,7 +83,8 @@ class _NewExpenseState extends State<NewExpense> {
           source: "Levi",
           category: _selectedCategory));
     }
-    widget.onAddExpense(Expense(_subTitleController.text,
+    widget.onAddExpense(Expense(
+      _subTitleController.text,
         title: _titleController.text,
         date: _selectedDate!,
         amount: enteredAmount,

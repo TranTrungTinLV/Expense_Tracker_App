@@ -35,7 +35,8 @@ CREATE TABLE tableExpenses (
   static Future insertExpense(Expense expense) async {
     Database db = await getDatabase;
     await db.insert('tableExpenses', expense.toMap());
-    print(await db.query('tableExpenses'));
+    print("insert database: ${await db.query('tableExpenses')}");
+
     // if (db == null) {
     //   throw Exception('Database not initialized');
     // }
@@ -48,4 +49,18 @@ CREATE TABLE tableExpenses (
       return Expense.fromMap(maps[i]);
     });
   }
+
+  static Future<String> delete(String id) async {
+    final db = await getDatabase;
+    try {
+      int result =
+          await db!.delete('tableExpenses', where: 'id = ?', whereArgs: [id]);
+      print('Deleted id: $id, result: $result');
+      return result > 0 ? 'Deleted successfully' : 'Failed to delete';
+    } catch (e) {
+      print("Error deleting id $id: $e");
+      return 'Failed to delete: $e';
+    }
+  }
+  // Future close() async => openDatabase('expenses_db.db').close();
 }
