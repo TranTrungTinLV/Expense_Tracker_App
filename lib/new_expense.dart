@@ -69,12 +69,10 @@ class _NewExpenseState extends State<NewExpense> {
                 actions: [
                   TextButton(
                       onPressed: () {
-                        // Navigator.pop(HomePage.id as BuildContext, "home_page");
-                        Navigator.pushNamed(context, HomePage.id);
+                        Navigator.pop(context, HomePage.id);
                       },
                       child: Text("OK"))
                 ],
-                // content: const Text("Please make sure a valid!"),
               ));
       SQLHelper.insertExpense(Expense(_subTitleController.text,
           title: _titleController.text,
@@ -83,8 +81,7 @@ class _NewExpenseState extends State<NewExpense> {
           source: "Levi",
           category: _selectedCategory));
     }
-    widget.onAddExpense(Expense(
-      _subTitleController.text,
+    widget.onAddExpense(Expense(_subTitleController.text,
         title: _titleController.text,
         date: _selectedDate!,
         amount: enteredAmount,
