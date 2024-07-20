@@ -18,8 +18,8 @@ class EmptyCard extends StatefulWidget {
       required this.icon,
       required this.title,
       required this.amount,
-      this.horizontal = 8.0,
-      this.vertical = 10.0,
+      required this.horizontal,
+      required this.vertical,
       this.coulor = colorText,
       this.cardCoulor,
       this.onTap});
@@ -52,8 +52,14 @@ class _EmptyCardState extends State<EmptyCard> {
         });
       },
       child: Container(
-        margin: EdgeInsets.symmetric(
-            vertical: widget.vertical, horizontal: widget.horizontal),
+        // margin: EdgeInsets.symmetric(
+        //     vertical: widget.vertical, horizontal: widget.horizontal),
+        // padding: EdgeInsets.symmetric(horizontal: 20.0),
+        margin: EdgeInsets.only(
+            top: widget.vertical,
+            bottom: widget.vertical,
+            right: 20,
+            left: widget.horizontal),
         decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment(1, -1),

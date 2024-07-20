@@ -109,35 +109,36 @@ class _HomePageState extends State<HomePage> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: <Widget>[
-                  EmptyCard(
-                    icon: FontAwesomeIcons.wallet,
-                    amount: '1.000.000',
-                    title: 'Total Salary',
-                    vertical: 10.0,
-                    horizontal: 30.0,
-                    onTap: () {
-                      setState(() {
-                        print("Hello");
-                      });
-                    },
-                  ),
+                  // EmptyCard(
+                  //   icon: FontAwesomeIcons.wallet,
+                  //   amount: '1.000.000',
+                  //   title: 'Total Salary',
+                  //   vertical: 10.0,
+                  //   horizontal: 30.0,
+                  //   onTap: () {
+                  //     setState(() {
+                  //       print("Hello");
+                  //     });
+                  //   },
+                  // ),
                   EmptyCard(
                     icon: FontAwesomeIcons.wallet,
                     amount: '1.000.000',
                     title: 'Total Expense',
-                    horizontal: 0.0,
-                    vertical: 0.0,
+                    horizontal: 20.0,
+                    vertical: 10.0,
                     onTap: () {
                       print("Total Expense");
                       Navigator.pushNamed(context, Totalexpense.id);
                     },
                   ),
+                  Container(),
                   EmptyCard(
                     icon: FontAwesomeIcons.wallet,
                     amount: '1.000.000',
                     title: 'Monthly',
-                    vertical: 10.0,
-                    horizontal: 30.0,
+                    vertical: 20.0,
+                    horizontal: 10.0,
                     onTap: () {
                       print("Monthly");
                     },

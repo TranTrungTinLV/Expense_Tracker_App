@@ -26,7 +26,7 @@ class _NewExpenseState extends State<NewExpense> {
         context: context,
         initialDate: now,
         firstDate: firstDate,
-        lastDate: now);
+        lastDate: DateTime(2030));
     setState(() {
       _selectedDate = pickedDate;
     });
