@@ -1,5 +1,6 @@
 import 'package:expense_tracker/ListTitle.dart';
 import 'package:expense_tracker/expense.dart';
+import 'package:expense_tracker/utils/chart_graph.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -146,21 +147,30 @@ class _TotalexpenseState extends State<Totalexpense> {
                       )
                     ],
                   ),
-                  Container(
-                    height: 300,
+                  // SizedBox(
+                  // height: 450,
+                  // color: Colors.black,
+                  // color: Colors.pink,
+                  Expanded(
                     child: TabBarView(
                       children: [
                         Container(
-                            height: 100,
-                            margin: EdgeInsets.only(top: 24, bottom: 50),
-                            padding: EdgeInsets.only(bottom: 30),
                             child: titleList(
-                              expense: _registeredExpense,
-                            )),
-                        Text("Haa")
+                          expense: _registeredExpense,
+                        )),
+                        // SingleChildScrollView(
+
+                        SingleChildScrollView(
+                          child: Container(
+                            height: 450, // Adjusted height for ChartGraph
+                            child: ChartGraph(),
+                          ),
+                        ),
+                        // )
                       ],
                     ),
                   ),
+                  // ),
                 ],
               ),
             ),

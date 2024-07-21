@@ -22,7 +22,7 @@ class SQLHelper {
 CREATE TABLE tableExpenses (
     id TEXT PRIMARY KEY,
     title TEXT,
-    subtitle TEXT,
+    description TEXT,
     amount REAL,
     source TEXT,
     date NUMERIC,

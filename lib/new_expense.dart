@@ -13,7 +13,7 @@ class NewExpense extends StatefulWidget {
 
 class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
-  final _subTitleController = TextEditingController();
+  final _descriptionController = TextEditingController();
   final _amountController = TextEditingController();
   final _formatterAmount = NumberFormat.decimalPattern();
 
@@ -74,14 +74,14 @@ class _NewExpenseState extends State<NewExpense> {
                       child: Text("OK"))
                 ],
               ));
-      SQLHelper.insertExpense(Expense(_subTitleController.text,
+      SQLHelper.insertExpense(Expense(_descriptionController.text,
           title: _titleController.text,
           date: _selectedDate!,
           amount: enteredAmount,
           source: "Levi",
           category: _selectedCategory));
     }
-    widget.onAddExpense(Expense(_subTitleController.text,
+    widget.onAddExpense(Expense(_descriptionController.text,
         title: _titleController.text,
         date: _selectedDate!,
         amount: enteredAmount,
@@ -107,12 +107,12 @@ class _NewExpenseState extends State<NewExpense> {
         TextField(
           controller: _titleController,
           maxLength: 50,
-          decoration: InputDecoration(label: Text('Title')),
+          decoration: InputDecoration(label: Text('title')),
         ),
         TextField(
-          controller: _subTitleController,
+          controller: _descriptionController,
           maxLength: 50,
-          decoration: InputDecoration(label: Text('Subtitle')),
+          decoration: InputDecoration(label: Text('description')),
         ),
         Row(
             mainAxisAlignment: MainAxisAlignment.center,

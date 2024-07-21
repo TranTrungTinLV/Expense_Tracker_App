@@ -59,7 +59,7 @@ class ExpenseItems extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0),
                 ),
                 Text(
-                  expense.subtitle,
+                  expense.description,
                   style: TextStyle(fontSize: 12),
                 ),
               ]),

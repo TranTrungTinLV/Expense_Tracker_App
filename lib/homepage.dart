@@ -159,12 +159,12 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Carousel(
-                        icon: Icons.add,
-                        horizontal: 20,
-                        vertical: 30,
-                        title: 'Savings',
-                      ),
+                      // Container(
+                      //   icon: Icons.add,
+                      //   horizontal: 20,
+                      //   vertical: 30,
+                      //   title: 'Savings',
+                      // ),
                       Carousel(
                         icon: Icons.notifications,
                         horizontal: 0,

@@ -17,7 +17,7 @@ const categoryIcons = {
 };
 
 class Expense {
-  Expense(this.subtitle,
+  Expense(this.description,
       {String? id,
       required this.title,
       required this.date,
@@ -27,7 +27,7 @@ class Expense {
       : id = id ?? uuid.v4();
   final String id;
   final String title;
-  final String subtitle;
+  final String description;
   final DateTime date;
   final double amount;
   final String source;
@@ -37,7 +37,7 @@ class Expense {
     return {
       'id': id,
       'title': title,
-      'subtitle': subtitle,
+      'description': description,
       'date': date.millisecondsSinceEpoch,
       'amount': amount,
       'source': source,
@@ -48,7 +48,7 @@ class Expense {
   factory Expense.fromMap(Map<String, dynamic> map) {
     return Expense(
       id: map['id'],
-      map['subtitle'],
+      map['description'],
       title: map['title'],
       date: DateTime.fromMillisecondsSinceEpoch(map['date']),
       amount: map['amount'],
