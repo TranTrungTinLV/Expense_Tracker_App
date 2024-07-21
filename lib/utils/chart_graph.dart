@@ -1,20 +1,65 @@
+import 'package:expense_tracker/expense.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class ChartGraph extends StatefulWidget {
-  const ChartGraph({super.key});
+  final List<ExpenseBucket> expenseBuckets;
+  const ChartGraph({super.key, required this.expenseBuckets});
 
   @override
   State<ChartGraph> createState() => _ChartGraphState();
 }
 
 class _ChartGraphState extends State<ChartGraph> {
-  final Map<String, Color> _Labels = {
-    'Food': Colors.blue,
-    'Advertising': Color(0xFF57A4F2),
-    'Telephone': Color(0xFFA0CCF8),
-    // 'Travel': Colors.purple
+  final Map<Category, Color> _Labels = {
+    Category.Food: Colors.blue,
+    Category.Advertising: Color(0xFF57A4F2),
+    Category.Travel: Color(0xFFA0CCF8),
+    Category.Work: Colors.orange,
+    Category.Telephone: Colors.red,
   };
+
+  //update code
+  Map<Category, Color> get _labelsForToday {
+    final labels = <Category, Color>{};
+    for (var bucket in widget.expenseBuckets) {
+      if (bucket.totalExpenses > 0) {
+        labels[bucket.category] = _Labels[bucket.category]!;
+      }
+    }
+    return labels;
+  }
+
+  List<GaugeRange> _buildRangePointers() {
+    double cumulativeValue = 0;
+    double totalValue = widget.expenseBuckets.fold(
+        0,
+        (sum, bucket) =>
+            sum + bucket.totalExpenses); // Tổng giá trị của tất cả chi phí
+    List<GaugeRange> ranges = [];
+
+    widget.expenseBuckets.forEach((bucket) {
+      final color = _labelsForToday[bucket.category];
+      if (color == null) {
+        print('Color for category ${bucket.category} is null');
+      }
+      double endValue =
+          cumulativeValue + (bucket.totalExpenses / totalValue) * 100;
+      ranges.add(GaugeRange(
+        startValue: cumulativeValue,
+        endValue: endValue,
+        color: color,
+        startWidth: 0.15,
+        endWidth: 0.15,
+        sizeUnit: GaugeSizeUnit.factor,
+      ));
+      print(
+          'Category: ${bucket.category}, Color: $color, Start: $cumulativeValue, End: $endValue');
+      cumulativeValue = endValue;
+    });
+
+    return ranges;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,89 +77,36 @@ class _ChartGraphState extends State<ChartGraph> {
           Row(
             children: [
               Expanded(
-                  child: SizedBox(
-                // width: 650,
-                child: SfRadialGauge(
-                  axes: [
-                    RadialAxis(
-                      showLabels: false,
-                      showTicks: false,
-                      showAxisLine: false,
-                      canScaleToFit: true,
-                      radiusFactor: 0.9,
-                      startAngle: 180,
-                      endAngle: 180,
-                      annotations: [
-                        GaugeAnnotation(
-                            widget: Container(
-                          height: 20,
-                          width: 20,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color(0xFFDCDFE3),
-                              border:
-                                  Border.all(color: Colors.white, width: 2.0)),
-                        )),
-                      ],
-                    ),
-                    RadialAxis(
-                      // radiusFactor: 0.8,
-                      showTicks: false,
-                      showLabels: false,
-                      showAxisLine: false,
-
-                      pointers: [
-                        RangePointer(
-                          value: 50,
-                          color: Color(0xFF0E33F3),
-                          width: 50,
-                        )
-                      ],
-                      startAngle: 180,
-                      endAngle: 24,
-                    ),
-                    RadialAxis(
-                      // radiusFactor: 0.8,
-                      showTicks: false,
-                      showLabels: false,
-                      showAxisLine: false,
-                      pointers: [
-                        RangePointer(
-                          value: 50,
-                          color: Color(0xFF57A4F2),
-                          width: 50,
-                        )
-                      ],
-                      startAngle: -75,
-                      endAngle: 12,
-                    ),
-                    RadialAxis(
-                      showTicks: false,
-                      showLabels: false,
-                      showAxisLine: false,
-                      // radiusFactor: 0.8,
-                      pointers: [
-                        RangePointer(
-                          value: 30,
-                          color: Color(0xFFA0CCF8),
-                          width: 50,
-                        )
-                      ],
-                      startAngle: -30,
-                      endAngle: 18,
-                    ),
-                  ],
+                child: SizedBox(
+                  child: SfRadialGauge(
+                    axes: [
+                      RadialAxis(
+                        minimum: 0,
+                        maximum: 100,
+                        showLabels: false,
+                        showTicks: false,
+                        showAxisLine: false,
+                        canScaleToFit: true,
+                        radiusFactor: 0.9,
+                        startAngle: 180,
+                        endAngle: 360,
+                        ranges: _buildRangePointers(),
+                      ),
+                    ],
+                  ),
                 ),
-              )),
+              ),
               SizedBox(
                 width: 32,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(
-                    3,
-                    (index) => LabelCharts(_Labels.keys.elementAt(index),
-                        _Labels.values.elementAt(index))),
+                children: _Labels.keys.map((category) {
+                  return LabelCharts(
+                    category.toString().split('.').last,
+                    _Labels[category] ?? Colors.grey,
+                  );
+                }).toList(),
               )
             ],
           )
@@ -123,7 +115,7 @@ class _ChartGraphState extends State<ChartGraph> {
     );
   }
 
-  LabelCharts(String label, Color color) {
+  Widget LabelCharts(String label, Color color) {
     return Row(
       children: [
         Container(

@@ -16,19 +16,61 @@ class _TotalexpenseState extends State<Totalexpense> {
   DateTime today = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.week;
   final List<Expense> _registeredExpense = [
-    // Expense("haha",
-    //     title: "cc",
-    //     date: DateTime.now(),
-    //     amount: 19.99,
-    //     source: "Levi",
-    //     category: Category.Food),
-    // Expense("Food",
-    //     title: "cooocooo",
-    //     date: DateTime.now(),
-    //     amount: 19.99,
-    //     source: "Tintran",
-    //     category: Category.Advertising),
+    Expense(
+      'Description 1',
+      title: 'Expense 1',
+      date: DateTime.now(),
+      amount: 100,
+      source: 'Source 1',
+      category: Category.Food,
+    ),
+    Expense(
+      'Description 2',
+      title: 'Expense 2',
+      date: DateTime.now(),
+      amount: 200,
+      source: 'Source 2',
+      category: Category.Advertising,
+    ),
+    Expense(
+      'Description 3',
+      title: 'Expense 3',
+      date: DateTime.now(),
+      amount: 150,
+      source: 'Source 3',
+      category: Category.Travel,
+    ),
+    Expense(
+      'Description 4',
+      title: 'Expense 4',
+      date: DateTime.now(),
+      amount: 50,
+      source: 'Source 4',
+      category: Category.Work,
+    ),
+    Expense(
+      'Description 5',
+      title: 'Expense 5',
+      date: DateTime.now(),
+      amount: 75,
+      source: 'Source 5',
+      category: Category.Telephone,
+    ),
   ];
+  List<ExpenseBucket> getDailyExpenseBuckets() {
+    // Tạo các ExpenseBucket từ chi phí hàng ngày
+    List<ExpenseBucket> buckets = [];
+    for (Category category in Category.values) {
+      buckets.add(ExpenseBucket.forCategory(
+        _registeredExpense
+            .where((expense) => isSameDay(expense.date, today))
+            .toList(),
+        category,
+      ));
+    }
+    return buckets;
+  }
+
   void _onDaySelected(DateTime day, DateTime focusedDay) {
     setState(() {
       today = day;
@@ -163,7 +205,9 @@ class _TotalexpenseState extends State<Totalexpense> {
                         SingleChildScrollView(
                           child: Container(
                             height: 450, // Adjusted height for ChartGraph
-                            child: ChartGraph(),
+                            child: ChartGraph(
+                              expenseBuckets: getDailyExpenseBuckets(),
+                            ),
                           ),
                         ),
                         // )

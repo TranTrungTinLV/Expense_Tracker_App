@@ -18,20 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Expense> _registeredExpense = [
-    // Expense("haha",
-    //     title: "cc",
-    //     date: DateTime.now(),
-    //     amount: 19.99,
-    //     source: "Levi",
-    //     category: Category.Food),
-    // Expense("Food",
-    //     title: "cooocooo",
-    //     date: DateTime.now(),
-    //     amount: 19.99,
-    //     source: "Tintran",
-    //     category: Category.Advertising),
-  ];
+  final List<Expense> _registeredExpense = [];
 
   void _addExpense(Expense expense) {
     setState(() {
