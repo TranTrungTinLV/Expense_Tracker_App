@@ -49,8 +49,8 @@ class _ChartGraphState extends State<ChartGraph> {
         startValue: cumulativeValue,
         endValue: endValue,
         color: color,
-        startWidth: 0.15,
-        endWidth: 0.15,
+        startWidth: 0.3,
+        endWidth: 0.3,
         sizeUnit: GaugeSizeUnit.factor,
       ));
       print(
@@ -59,6 +59,38 @@ class _ChartGraphState extends State<ChartGraph> {
     });
 
     return ranges;
+  }
+
+  List<GaugeAnnotation> _buildAnnotations() {
+    double cumulativeValue = 0;
+    double totalValue = widget.expenseBuckets.fold(
+        0,
+        (sum, bucket) =>
+            sum + bucket.totalExpenses); // Tổng giá trị của tất cả chi phí
+    List<GaugeAnnotation> annotations = [];
+
+    widget.expenseBuckets.forEach((bucket) {
+      double percentage = (bucket.totalExpenses / totalValue) * 100;
+      if (percentage > 0) {
+        // Only add annotation for non-zero values
+        double endValue = cumulativeValue + percentage;
+        annotations.add(GaugeAnnotation(
+          widget: Text(
+            '${percentage.toStringAsFixed(0)}%',
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFB0B8BF)),
+          ),
+          angle: 180 + (cumulativeValue + endValue) / 2 * 1.8, // Adjust angle
+          positionFactor: 1.2, // Adjust position factor
+          horizontalAlignment: GaugeAlignment.center,
+        ));
+        cumulativeValue = endValue;
+      }
+    });
+
+    return annotations;
   }
 
   @override
@@ -87,10 +119,11 @@ class _ChartGraphState extends State<ChartGraph> {
                         showTicks: false,
                         showAxisLine: false,
                         canScaleToFit: true,
-                        radiusFactor: 0.9,
+                        radiusFactor: 0.8,
                         startAngle: 180,
                         endAngle: 360,
                         ranges: _buildRangePointers(),
+                        annotations: _buildAnnotations(),
                       ),
                     ],
                   ),
