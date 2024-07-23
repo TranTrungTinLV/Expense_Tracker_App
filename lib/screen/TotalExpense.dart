@@ -1,4 +1,5 @@
 import 'package:expense_tracker/ListTitle.dart';
+import 'package:expense_tracker/data/sqlfite/sqflife_helper.dart';
 import 'package:expense_tracker/expense.dart';
 import 'package:expense_tracker/utils/chart_graph.dart';
 import 'package:flutter/material.dart';
@@ -15,48 +16,7 @@ class Totalexpense extends StatefulWidget {
 class _TotalexpenseState extends State<Totalexpense> {
   DateTime today = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.week;
-  final List<Expense> _registeredExpense = [
-    Expense(
-      'Description 1',
-      title: 'Expense 1',
-      date: DateTime.now(),
-      amount: 100,
-      source: 'Source 1',
-      category: Category.Food,
-    ),
-    Expense(
-      'Description 2',
-      title: 'Expense 2',
-      date: DateTime.now(),
-      amount: 200,
-      source: 'Source 2',
-      category: Category.Advertising,
-    ),
-    Expense(
-      'Description 3',
-      title: 'Expense 3',
-      date: DateTime.now(),
-      amount: 150,
-      source: 'Source 3',
-      category: Category.Travel,
-    ),
-    Expense(
-      'Description 4',
-      title: 'Expense 4',
-      date: DateTime.now(),
-      amount: 50,
-      source: 'Source 4',
-      category: Category.Work,
-    ),
-    Expense(
-      'Description 5',
-      title: 'Expense 5',
-      date: DateTime.now(),
-      amount: 75,
-      source: 'Source 5',
-      category: Category.Telephone,
-    ),
-  ];
+  List<Expense> _registeredExpense = [];
   List<ExpenseBucket> getDailyExpenseBuckets() {
     // Tạo các ExpenseBucket từ chi phí hàng ngày
     List<ExpenseBucket> buckets = [];
@@ -69,6 +29,24 @@ class _TotalexpenseState extends State<Totalexpense> {
       ));
     }
     return buckets;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadExpenses();
+  }
+
+  Future<void> _loadExpenses() async {
+    final expenses = await SQLHelper.loadExpenses();
+    setState(() {
+      _registeredExpense = expenses;
+    });
+  }
+
+  void _addExpense(Expense expense) async {
+    await SQLHelper.insertExpense(expense);
+    _loadExpenses(); // Refresh the list after adding a new expense
   }
 
   void _onDaySelected(DateTime day, DateTime focusedDay) {
