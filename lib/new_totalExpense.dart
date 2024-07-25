@@ -1,37 +1,36 @@
-import 'package:expense_tracker/screen/TotalExpense.dart';
-import 'package:expense_tracker/utils/expense.dart';
+import 'package:expense_tracker/utils/categories_expense.dart';
 import 'package:expense_tracker/homepage.dart';
 import 'package:expense_tracker/data/sqlfite/sqflife_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class NewExpense extends StatefulWidget {
-  const NewExpense({super.key, required this.onAddExpense});
-  final void Function(Expense expense) onAddExpense;
+class NewTotalexpense extends StatefulWidget {
+  const NewTotalexpense({super.key, required this.onAddExpense});
+  final void Function(CategoriesExpense expense) onAddExpense;
   @override
-  State<NewExpense> createState() => _NewExpenseState();
+  State<NewTotalexpense> createState() => _NewTotalexpenseState();
 }
 
-class _NewExpenseState extends State<NewExpense> {
+class _NewTotalexpenseState extends State<NewTotalexpense> {
   final _titleController = TextEditingController();
-  final _descriptionController = TextEditingController();
+  // final _descriptionController = TextEditingController();
   final _amountController = TextEditingController();
   final _formatterAmount = NumberFormat.decimalPattern();
 
-  DateTime? _selectedDate;
-  Category _selectedCategory = Category.Food;
-  void _presentDatePicker() async {
-    final now = DateTime.now();
-    final firstDate = DateTime(now.day, now.month, now.year - 1);
-    final pickedDate = await showDatePicker(
-        context: context,
-        initialDate: now,
-        firstDate: firstDate,
-        lastDate: DateTime(2030));
-    setState(() {
-      _selectedDate = pickedDate;
-    });
-  }
+  // DateTime? _selectedDate;
+  TotalExpenseIcons _selectedIcon = TotalExpenseIcons.Wallet;
+  // void _presentDatePicker() async {
+  //   final now = DateTime.now();
+  //   final firstDate = DateTime(now.day, now.month, now.year - 1);
+  //   // final pickedDate = await showDatePicker(
+  //   //     context: context,
+  //   //     initialDate: now,
+  //   //     firstDate: firstDate,
+  //   //     lastDate: DateTime(2030));
+  //   // setState(() {
+  //   //   _selectedDate = pickedDate;
+  //   // });
+  // }
 
   void _submitExpenseData() {
     final enteredAmount = double.tryParse(_amountController.text.replaceAll(
@@ -39,9 +38,7 @@ class _NewExpenseState extends State<NewExpense> {
     print("giá trị: ${enteredAmount}");
 
     final ammountInvalid = enteredAmount == null || enteredAmount <= 1000;
-    if (_titleController.text.isEmpty ||
-        ammountInvalid ||
-        _selectedDate == null) {
+    if (_titleController.text.isEmpty || ammountInvalid) {
       showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
@@ -55,51 +52,35 @@ class _NewExpenseState extends State<NewExpense> {
                       child: Text('Cancel')),
                   TextButton(
                       onPressed: () {
-                        // Navigator.pop(ctx);
-                        if (mounted) {
-                          Navigator.pop(ctx);
-                        }
+                        Navigator.pop(context, 'OK');
                       },
                       child: Text('OK'))
                 ],
               ));
       return;
     } else {
-      if (mounted) {
-        // Navigator.pop(context, 'OK');
-        Navigator.of(context, rootNavigator: true).pop();
-
-        // Navigator.pop(context, Totalexpense.id);
-
-        // showDialog(
-        //   context: context,
-        //   builder: (ctx) => AlertDialog(
-        //     title: Text("Successfully! 😘"),
-        //     actions: [
-        //       TextButton(
-        //         onPressed: () {
-        //           // Navigator.of(context, rootNavigator: true).pop();
-        //           Navigator.pop(context, Totalexpense.id);
-        //         },
-        //         child: Text("OK"),
-        //       ),
-        //     ],
-        //   ),
-        // );
-      }
-      SQLHelper.insertExpense(Expense(_descriptionController.text,
+      Navigator.pop(context);
+      // showDialog(
+      //     context: context,
+      //     builder: (ctx) => AlertDialog(
+      //           title: const Text("Successfully! 😘"),
+      //           actions: [
+      //             TextButton(
+      //                 onPressed: () {
+      //                   Navigator.pushNamed(context, HomePage.id);
+      //                 },
+      //                 child: Text("OK"))
+      //           ],
+      //         ));
+      SQLHelper.insertCategories(CategoriesExpense(
           title: _titleController.text,
-          date: _selectedDate!,
           amount: enteredAmount,
-          source: "Levi",
-          category: _selectedCategory));
+          icon: _selectedIcon));
     }
-    widget.onAddExpense(Expense(_descriptionController.text,
+    widget.onAddExpense(CategoriesExpense(
         title: _titleController.text,
-        date: _selectedDate!,
         amount: enteredAmount,
-        source: "Levi",
-        category: _selectedCategory));
+        icon: _selectedIcon));
   }
 
   @override
@@ -122,11 +103,11 @@ class _NewExpenseState extends State<NewExpense> {
           maxLength: 50,
           decoration: InputDecoration(label: Text('title')),
         ),
-        TextField(
-          controller: _descriptionController,
-          maxLength: 50,
-          decoration: InputDecoration(label: Text('description')),
-        ),
+        // TextField(
+        //   controller: _descriptionController,
+        //   maxLength: 50,
+        //   decoration: InputDecoration(label: Text('description')),
+        // ),
         Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -163,15 +144,15 @@ class _NewExpenseState extends State<NewExpense> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    _selectedDate == null
-                        ? 'Dealine'
-                        : formatter.format(_selectedDate!),
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  IconButton(
-                      onPressed: _presentDatePicker,
-                      icon: Icon(Icons.date_range))
+                  // Text(
+                  //   _selectedDate == null
+                  //       ? 'Dealine'
+                  //       : formatter.format(_selectedDate!),
+                  //   style: TextStyle(fontSize: 16.0),
+                  // ),
+                  // IconButton(
+                  //     onPressed: _presentDatePicker,
+                  //     icon: Icon(Icons.date_range))
                 ],
               )),
             ]),
@@ -179,8 +160,8 @@ class _NewExpenseState extends State<NewExpense> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             DropdownButton(
-                value: _selectedCategory,
-                items: Category.values
+                value: _selectedIcon,
+                items: TotalExpenseIcons.values
                     .map((category) => DropdownMenuItem(
                         value: category, child: Text(category.name.toString())))
                     .toList(),
@@ -190,24 +171,43 @@ class _NewExpenseState extends State<NewExpense> {
                   }
                   ;
                   setState(() {
-                    _selectedCategory = value;
+                    _selectedIcon = value;
                   });
                 }),
-            Row(
-              children: <Widget>[
-                TextButton(
-                    onPressed: () {
-                      // SQLHelper.insertExpense()
-                      Navigator.pop(context, 'Cancel');
-                    },
-                    child: Text('Cancel')),
-                ElevatedButton(
-                    onPressed: _submitExpenseData,
-                    child: const Text('Save Goal'))
-              ],
-            ),
+            // DropdownButton(
+            //     value: _selectedIcon,
+            //     items: TotalExpenseIcons.values
+            //         .map((category) => DropdownMenuItem(
+            //             value: category, child: Text(category.name.toString())))
+            //         .toList(),
+            //     onChanged: (value) {
+            //       if (value == null) {
+            //         return;
+            //       }
+            //       ;
+            //       setState(() {
+            //         _selectedIcon = value;
+            //       });
+            //     }),
           ],
         ),
+        SizedBox(
+          height: 60,
+        ),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Container(),
+          Row(
+            children: <Widget>[
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, 'Cancel');
+                  },
+                  child: Text('Cancel')),
+              ElevatedButton(
+                  onPressed: _submitExpenseData, child: const Text('Save Goal'))
+            ],
+          ),
+        ])
       ],
     );
     // );

@@ -1,14 +1,17 @@
 import 'package:expense_tracker/Carousel.dart';
 import 'package:expense_tracker/EmptyCart.dart';
 import 'package:expense_tracker/ListTitle.dart';
-import 'package:expense_tracker/expense.dart';
-import 'package:expense_tracker/new_expense.dart';
-import 'package:expense_tracker/screen/TotalExpense.dart';
+import 'package:expense_tracker/category_list.dart';
+import 'package:expense_tracker/new_totalExpense.dart';
+import 'package:expense_tracker/utils/categories_expense.dart';
+import 'package:expense_tracker/utils/expense.dart';
+// import 'package:expense_tracker/utils/expense.dart';
+// import 'package:expense_tracker/new_expense.dart';
+
+// import 'package:expense_tracker/screen/TotalExpense.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:popover/popover.dart';
 
 class HomePage extends StatefulWidget {
   static String id = 'home_page';
@@ -20,10 +23,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<Expense> _registeredExpense = [];
-
+  final List<CategoriesExpense> _registeredCategories = [];
   void _addExpense(Expense expense) {
     setState(() {
       _registeredExpense.add(expense);
+    });
+  }
+
+  //Total Expense
+  void _addCategoriesExpense(CategoriesExpense categories_expense) {
+    setState(() {
+      _registeredCategories.add(categories_expense);
     });
   }
 
@@ -32,8 +42,6 @@ class _HomePageState extends State<HomePage> {
     showMaterialModalBottomSheet(
         context: context,
         barrierColor: Colors.black.withOpacity(0.5),
-        // isScrollControlled: true,
-
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(24.0),
@@ -43,10 +51,10 @@ class _HomePageState extends State<HomePage> {
         builder: (context) => Padding(
             padding: MediaQuery.of(context).viewInsets,
             child: Container(
-              height: 400,
+              height: 600,
               padding: EdgeInsets.all(32.0),
-              child: NewExpense(
-                onAddExpense: _addExpense,
+              child: NewTotalexpense(
+                onAddExpense: _addCategoriesExpense,
               ),
             )));
   }
@@ -62,9 +70,6 @@ class _HomePageState extends State<HomePage> {
             size: 35,
           ),
         ),
-
-        // onTap: _openAddExpenseOverlay,
-        // ),
         backgroundColor: const Color(0xFFF5F6F7),
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -77,15 +82,12 @@ class _HomePageState extends State<HomePage> {
                 textAlign: TextAlign.start,
               )),
           actions: <Widget>[
-            Container(
-                // width: 10000,
-                ),
+            Container(),
             Container(
               padding: const EdgeInsets.only(top: 20, right: 30),
               child: PopupMenuButton(
                 itemBuilder: (BuildContext context) => [
                   PopupMenuItem(
-                    
                     child: Text('Light'),
                   ),
                   PopupMenuItem(
@@ -106,47 +108,12 @@ class _HomePageState extends State<HomePage> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SingleChildScrollView(
+            Container(
               padding: EdgeInsets.only(top: 30, bottom: 30),
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: <Widget>[
-                  // EmptyCard(
-                  //   icon: FontAwesomeIcons.wallet,
-                  //   amount: '1.000.000',
-                  //   title: 'Total Salary',
-                  //   vertical: 10.0,
-                  //   horizontal: 30.0,
-                  //   onTap: () {
-                  //     setState(() {
-                  //       print("Hello");
-                  //     });
-                  //   },
-                  // ),
-                  EmptyCard(
-                    icon: FontAwesomeIcons.wallet,
-                    amount: '1.000.000',
-                    title: 'Total Expense',
-                    horizontal: 20.0,
-                    vertical: 10.0,
-                    onTap: () {
-                      print("Total Expense");
-                      Navigator.pushNamed(context, Totalexpense.id);
-                    },
-                  ),
-                  Container(),
-                  EmptyCard(
-                    icon: FontAwesomeIcons.wallet,
-                    amount: '1.000.000',
-                    title: 'Monthly',
-                    vertical: 20.0,
-                    horizontal: 10.0,
-                    onTap: () {
-                      print("Monthly");
-                    },
-                  ),
-                ],
-              ),
+              // scrollDirection: Axis.horizontal,
+              child: CategoryList(expense: _registeredCategories),
+              //   ],
+              // ),
             ),
             Expanded(
               child: Container(
@@ -161,12 +128,6 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Container(
-                      //   icon: Icons.add,
-                      //   horizontal: 20,
-                      //   vertical: 30,
-                      //   title: 'Savings',
-                      // ),
                       Carousel(
                         icon: Icons.notifications,
                         horizontal: 0,

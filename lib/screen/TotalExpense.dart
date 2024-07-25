@@ -1,12 +1,17 @@
 import 'package:expense_tracker/ListTitle.dart';
 import 'package:expense_tracker/data/sqlfite/sqflife_helper.dart';
-import 'package:expense_tracker/expense.dart';
+import 'package:expense_tracker/new_expense.dart';
+import 'package:expense_tracker/utils/categories_expense.dart';
+import 'package:expense_tracker/utils/expense.dart';
 import 'package:expense_tracker/utils/chart_graph.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Totalexpense extends StatefulWidget {
   static String id = 'total_expense';
+
   const Totalexpense({super.key});
 
   @override
@@ -17,8 +22,8 @@ class _TotalexpenseState extends State<Totalexpense> {
   DateTime today = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.week;
   List<Expense> _registeredExpense = [];
+  final formatter = NumberFormat.decimalPattern();
   List<ExpenseBucket> getDailyExpenseBuckets() {
-    // Tạo các ExpenseBucket từ chi phí hàng ngày
     List<ExpenseBucket> buckets = [];
     for (Category category in Category.values) {
       buckets.add(ExpenseBucket.forCategory(
@@ -29,6 +34,35 @@ class _TotalexpenseState extends State<Totalexpense> {
       ));
     }
     return buckets;
+  }
+
+  //add expense
+  void _addChildrenExpense(Expense expense) {
+    setState(() {
+      _registeredExpense.add(expense);
+    });
+  }
+
+  //function action add
+  void _openAddExpenseOverlay() {
+    showMaterialModalBottomSheet(
+        context: context,
+        barrierColor: Colors.black.withOpacity(0.5),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(24.0),
+            topRight: Radius.circular(24.0),
+          ),
+        ),
+        builder: (context) => Padding(
+            padding: MediaQuery.of(context).viewInsets,
+            child: Container(
+              height: 600,
+              padding: EdgeInsets.all(32.0),
+              child: NewExpense(
+                onAddExpense: _addChildrenExpense,
+              ),
+            )));
   }
 
   @override
@@ -46,7 +80,7 @@ class _TotalexpenseState extends State<Totalexpense> {
 
   void _addExpense(Expense expense) async {
     await SQLHelper.insertExpense(expense);
-    _loadExpenses(); // Refresh the list after adding a new expense
+    _loadExpenses();
   }
 
   void _onDaySelected(DateTime day, DateTime focusedDay) {
@@ -57,28 +91,42 @@ class _TotalexpenseState extends State<Totalexpense> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: GestureDetector(
-        child: Container(
-          width: 50,
-          height: 50,
-          child: Icon(
-            Icons.add,
-            size: 40,
-          ),
+    final CategoriesExpense? expense =
+        ModalRoute.of(context)?.settings.arguments as CategoriesExpense?;
+    if (expense == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Error'),
         ),
-        onTap: () {
-          print("floatingActionButton");
-        },
-      ),
+        body: Center(
+          child: Text('No expense data provided.'),
+        ),
+      );
+    }
+    return Scaffold(
       backgroundColor: const Color(0xFFF5F6F7),
       appBar: AppBar(
-          toolbarHeight: 80.0,
-          centerTitle: true,
-          title: Text(
-            'Total Expense',
-            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w500),
-          )),
+        toolbarHeight: 80.0,
+        centerTitle: true,
+        title: Text(
+          expense.title,
+          style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w500),
+        ),
+        actions: [
+          GestureDetector(
+            onTap: _openAddExpenseOverlay,
+            child: Container(
+              width: 50,
+              padding: const EdgeInsets.only(right: 10),
+              height: 50,
+              child: Icon(
+                Icons.add,
+                size: 40,
+              ),
+            ),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(children: [
           Container(
@@ -128,9 +176,9 @@ class _TotalexpenseState extends State<Totalexpense> {
                     colors: [Color(0xFF2FDAFF), Color(0xFF0E33F3)]),
                 border: Border.all(color: Color(0x662FD9FF), width: 2.0)),
             child: Text(
-              '12,000 vnđ',
+              '${formatter.format(expense.amount)} vnđ',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 24.0, color: Colors.white),
+              style: TextStyle(fontSize: 20.0, color: Colors.white),
             ),
           ),
           Container(

@@ -1,5 +1,5 @@
 import 'package:expense_tracker/ExpenseItems.dart';
-import 'package:expense_tracker/expense.dart';
+import 'package:expense_tracker/utils/expense.dart';
 import 'package:expense_tracker/data/sqlfite/sqflife_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +37,7 @@ class _titleListState extends State<titleList> {
                   String result =
                       await SQLHelper.delete(snapshot.data![index].id);
                   print(result);
-                  setState(() {}); // Làm mới UI // Refresh the UI
+                  setState(() {});
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Failed to delete: $e')),

@@ -1,74 +1,41 @@
+import 'package:expense_tracker/screen/TotalExpense.dart';
+import 'package:expense_tracker/utils/categories_expense.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 const Color colorText = Color(0xFF242D35);
 Color _color = Colors.white;
 
 class EmptyCard extends StatefulWidget {
-  final IconData icon;
-  final String title;
-  final String amount;
-  final double horizontal;
-  final double vertical;
-  final Color? coulor;
-  final Color? cardCoulor;
-
   final VoidCallback? onTap;
-  const EmptyCard(
-      {super.key,
-      required this.icon,
-      required this.title,
-      required this.amount,
-      required this.horizontal,
-      required this.vertical,
-      this.coulor = colorText,
-      this.cardCoulor,
-      this.onTap});
-
+  const EmptyCard(this.expense, {this.onTap});
+  final CategoriesExpense expense;
   @override
   State<EmptyCard> createState() => _EmptyCardState();
 }
 
 class _EmptyCardState extends State<EmptyCard> {
-  bool _isTapped = false;
+  final formatter = NumberFormat.decimalPattern();
+  // bool _isTapped = false;
   @override
   Widget build(BuildContext context) {
+    print("formatter ${formatter.runtimeType}");
     return GestureDetector(
-      onTapDown: (details) {
-        setState(() {
-          _isTapped = true;
-        });
-      },
-      onTapUp: (details) {
-        setState(() {
-          _isTapped = false;
-        });
-        if (widget.onTap != null) {
-          widget.onTap!();
-        }
-      },
-      onTapCancel: () {
-        setState(() {
-          _isTapped = false;
-        });
+      onTap: () => {
+        Navigator.pushNamed(
+          context,
+          Totalexpense.id,
+          arguments: widget.expense,
+        )
       },
       child: Container(
-        // margin: EdgeInsets.symmetric(
-        //     vertical: widget.vertical, horizontal: widget.horizontal),
-        // padding: EdgeInsets.symmetric(horizontal: 20.0),
-        margin: EdgeInsets.only(
-            top: widget.vertical,
-            bottom: widget.vertical,
-            right: 20,
-            left: widget.horizontal),
+        margin: EdgeInsets.only(top: 20, bottom: 20, right: 20, left: 10),
         decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment(1, -1),
-              end: Alignment(-1, 1),
-              stops: <double>[0, 1],
-              colors: !_isTapped
-                  ? [Colors.white, Colors.white]
-                  : [Colors.white, Colors.white],
-            ),
+                begin: Alignment(1, -1),
+                end: Alignment(-1, 1),
+                stops: <double>[0, 1],
+                colors: [Colors.white, Colors.white]),
             // color: widget.cardCoulor,
             borderRadius: BorderRadius.circular(20.0),
             boxShadow: [
@@ -79,7 +46,7 @@ class _EmptyCardState extends State<EmptyCard> {
                 offset: Offset(0, 3), // changes position of shadow
               ),
             ]),
-        height: 140.0,
+        height: 160.0,
         width: 200.0,
         child: Container(
           width: 90,
@@ -88,32 +55,27 @@ class _EmptyCardState extends State<EmptyCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
+              Icon(categoryIcons[widget.expense.icon], color: Colors.black),
               Container(
                   height: 60,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(
-                        widget.icon,
-                        color: !_isTapped ? Color(0xFF242D35) : Colors.black,
-                      ),
+                      Container(),
                       Container(
                         height: 8,
                       ),
                       Text(
-                        widget.title,
-                        style: TextStyle(
-                            fontSize: 18.0,
-                            color:
-                                !_isTapped ? Color(0xFF242D35) : Colors.black),
+                        widget.expense.title,
+                        style: TextStyle(fontSize: 18.0, color: Colors.black),
                       ),
                     ],
                   )),
-              Text(widget.amount,
+              Text("${formatter.format(widget.expense.amount)}",
                   style: TextStyle(
                       fontSize: 24.0,
                       letterSpacing: 0.32,
-                      color: !_isTapped ? Color(0xFF242D35) : Colors.black)),
+                      color: Colors.black)),
             ],
           ),
         ),
