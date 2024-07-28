@@ -23,6 +23,7 @@ class _TotalexpenseState extends State<Totalexpense> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
   List<Expense> _registeredExpense = [];
   final formatter = NumberFormat.decimalPattern();
+
   List<ExpenseBucket> getDailyExpenseBuckets() {
     List<ExpenseBucket> buckets = [];
     for (Category category in Category.values) {
@@ -75,7 +76,8 @@ class _TotalexpenseState extends State<Totalexpense> {
   Future<void> _loadExpenses() async {
     final expenses = await SQLHelper.loadExpenses();
     setState(() {
-      _registeredExpense = expenses;
+      _registeredExpense =
+          expenses.where((expense) => isSameDay(expense.date, today)).toList();
     });
   }
 
@@ -88,6 +90,9 @@ class _TotalexpenseState extends State<Totalexpense> {
     setState(() {
       today = day;
     });
+    _loadExpenses();
+
+    // _registeredExpense;
   }
 
   @override
@@ -227,6 +232,7 @@ class _TotalexpenseState extends State<Totalexpense> {
                             child: titleList(
                           expense: _registeredExpense,
                           onExpenseDeleted: _loadExpenses,
+                          selectedDate: today,
                         )),
                         // SingleChildScrollView(
 

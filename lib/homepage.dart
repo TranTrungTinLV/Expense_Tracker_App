@@ -171,16 +171,17 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ]),
                   ),
-                  Expanded(
-                      child: Container(
-                          height: 100,
-                          margin: EdgeInsets.only(
-                              left: 10, right: 10, top: 24, bottom: 50),
-                          padding: EdgeInsets.only(bottom: 30),
-                          child: titleList(
-                            expense: _registeredExpense,
-                            onExpenseDeleted: () {},
-                          )))
+                  // Expanded(
+                  //     child: Container(
+                  //         height: 100,
+                  //         margin: EdgeInsets.only(
+                  //             left: 10, right: 10, top: 24, bottom: 50),
+                  //         padding: EdgeInsets.only(bottom: 30),
+                  //         child: titleList(
+                  //           expense: _registeredExpense,
+                  //           onExpenseDeleted: () {},
+                  //           // selectedDate: ,
+                  //         )))
                 ]),
               ),
             ),

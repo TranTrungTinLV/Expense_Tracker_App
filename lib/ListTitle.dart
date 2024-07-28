@@ -2,12 +2,15 @@ import 'package:expense_tracker/ExpenseItems.dart';
 import 'package:expense_tracker/utils/expense.dart';
 import 'package:expense_tracker/data/sqlfite/sqflife_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class titleList extends StatefulWidget {
+  final DateTime selectedDate;
   titleList({
     super.key,
     required this.expense,
     required this.onExpenseDeleted,
+    required this.selectedDate,
   });
   final List<Expense> expense;
   final VoidCallback onExpenseDeleted; // Add this callback
@@ -29,6 +32,13 @@ class _titleListState extends State<titleList> {
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(child: Text('No expenses found'));
         } else {
+          final filteredExpenses = snapshot.data!
+              .where((expense) => isSameDay(expense.date, widget.selectedDate))
+              .toList();
+          print("filteredExpenses ${filteredExpenses}");
+          if (filteredExpenses.isEmpty) {
+            return Center(child: Text('No expenses found'));
+          }
           return ListView.builder(
             itemCount: snapshot.data!.length,
             itemBuilder: (ctx, index) => Dismissible(
@@ -47,7 +57,7 @@ class _titleListState extends State<titleList> {
                   );
                 }
               },
-              child: ExpenseItems(snapshot.data![index]),
+              child: ExpenseItems(filteredExpenses[index]),
             ),
           );
         }
