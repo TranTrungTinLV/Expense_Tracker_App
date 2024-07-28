@@ -23,7 +23,8 @@ class Expense {
       required this.date,
       required this.amount,
       required this.source,
-      required this.category})
+      required this.category,
+      required this.categoryId})
       : id = id ?? uuid.v4();
   final String id;
   final String title;
@@ -32,6 +33,7 @@ class Expense {
   final double amount;
   final String source;
   final Category category;
+  final String categoryId;
 
   Map<String, dynamic> toMap() {
     return {
@@ -41,7 +43,8 @@ class Expense {
       'date': date.millisecondsSinceEpoch,
       'amount': amount,
       'source': source,
-      'category': category.toString().split('.').last
+      'category': category.toString().split('.').last,
+      'category_id': categoryId
     };
   }
 
@@ -55,6 +58,7 @@ class Expense {
       source: map['source'],
       category: Category.values
           .firstWhere((e) => e.toString() == 'Category.' + map['category']),
+      categoryId: map['category_id'],
     );
   }
 

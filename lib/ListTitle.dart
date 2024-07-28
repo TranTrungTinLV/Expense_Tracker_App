@@ -6,11 +6,14 @@ import 'package:table_calendar/table_calendar.dart';
 
 class titleList extends StatefulWidget {
   final DateTime selectedDate;
+  final String categoryId; // Change this to String
+
   titleList({
     super.key,
     required this.expense,
     required this.onExpenseDeleted,
     required this.selectedDate,
+    required this.categoryId,
   });
   final List<Expense> expense;
   final VoidCallback onExpenseDeleted; // Add this callback
@@ -33,6 +36,7 @@ class _titleListState extends State<titleList> {
           return Center(child: Text('No expenses found'));
         } else {
           final filteredExpenses = snapshot.data!
+              .where((expense) => expense.categoryId == widget.categoryId)
               .where((expense) => isSameDay(expense.date, widget.selectedDate))
               .toList();
           print("filteredExpenses ${filteredExpenses}");

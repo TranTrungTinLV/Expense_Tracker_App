@@ -26,9 +26,12 @@ class _TotalexpenseState extends State<Totalexpense> {
 
   List<ExpenseBucket> getDailyExpenseBuckets() {
     List<ExpenseBucket> buckets = [];
+    final CategoriesExpense? expenseCatgoryID =
+        ModalRoute.of(context)?.settings.arguments as CategoriesExpense?;
     for (Category category in Category.values) {
       buckets.add(ExpenseBucket.forCategory(
         _registeredExpense
+            .where((expense) => expense.categoryId == expenseCatgoryID!.id)
             .where((expense) => isSameDay(expense.date, today))
             .toList(),
         category,
@@ -47,6 +50,8 @@ class _TotalexpenseState extends State<Totalexpense> {
 
   //function action add
   void _openAddExpenseOverlay() {
+    final CategoriesExpense? expense =
+        ModalRoute.of(context)?.settings.arguments as CategoriesExpense?;
     showMaterialModalBottomSheet(
         context: context,
         barrierColor: Colors.black.withOpacity(0.5),
@@ -63,6 +68,7 @@ class _TotalexpenseState extends State<Totalexpense> {
               padding: EdgeInsets.all(32.0),
               child: NewExpense(
                 onAddExpense: _addChildrenExpense,
+                categoryId: expense!.id,
               ),
             )));
   }
@@ -233,6 +239,7 @@ class _TotalexpenseState extends State<Totalexpense> {
                           expense: _registeredExpense,
                           onExpenseDeleted: _loadExpenses,
                           selectedDate: today,
+                          categoryId: expense.id,
                         )),
                         // SingleChildScrollView(
 

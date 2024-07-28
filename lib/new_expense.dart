@@ -6,7 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key, required this.onAddExpense});
+  final String categoryId;
+
+  const NewExpense(
+      {super.key, required this.onAddExpense, required this.categoryId});
   final void Function(Expense expense) onAddExpense;
   @override
   State<NewExpense> createState() => _NewExpenseState();
@@ -17,7 +20,6 @@ class _NewExpenseState extends State<NewExpense> {
   final _descriptionController = TextEditingController();
   final _amountController = TextEditingController();
   final _formatterAmount = NumberFormat.decimalPattern();
-
   DateTime? _selectedDate;
   Category _selectedCategory = Category.Food;
   void _presentDatePicker() async {
@@ -92,14 +94,16 @@ class _NewExpenseState extends State<NewExpense> {
           date: _selectedDate!,
           amount: enteredAmount,
           source: "Levi",
-          category: _selectedCategory));
+          category: _selectedCategory,
+          categoryId: widget.categoryId));
     }
     widget.onAddExpense(Expense(_descriptionController.text,
         title: _titleController.text,
         date: _selectedDate!,
         amount: enteredAmount,
         source: "Levi",
-        category: _selectedCategory));
+        category: _selectedCategory,
+        categoryId: widget.categoryId));
   }
 
   @override
