@@ -24,6 +24,18 @@ class _TotalexpenseState extends State<Totalexpense> {
   List<Expense> _registeredExpense = [];
   final formatter = NumberFormat.decimalPattern();
 
+  double getTotalSpent() {
+    final CategoriesExpense? expenseCatgoryID =
+        ModalRoute.of(context)?.settings.arguments as CategoriesExpense?;
+    return _registeredExpense
+        .where((expense) => expense.categoryId == expenseCatgoryID!.id)
+        .fold(0, (sum, expense) => sum + expense.amount);
+  }
+
+  double getRemainingAmount(double categoryAmount) {
+    return categoryAmount - getTotalSpent();
+  }
+
   List<ExpenseBucket> getDailyExpenseBuckets() {
     List<ExpenseBucket> buckets = [];
     final CategoriesExpense? expenseCatgoryID =
@@ -115,6 +127,8 @@ class _TotalexpenseState extends State<Totalexpense> {
         ),
       );
     }
+    double remainingAmount = getRemainingAmount(expense.amount);
+
     return Scaffold(
       backgroundColor: const Color(0xFFF5F6F7),
       appBar: AppBar(
@@ -188,7 +202,7 @@ class _TotalexpenseState extends State<Totalexpense> {
                     colors: [Color(0xFF2FDAFF), Color(0xFF0E33F3)]),
                 border: Border.all(color: Color(0x662FD9FF), width: 2.0)),
             child: Text(
-              '${formatter.format(expense.amount)} vnđ',
+              '${formatter.format(remainingAmount)} vnđ',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20.0, color: Colors.white),
             ),
@@ -196,11 +210,20 @@ class _TotalexpenseState extends State<Totalexpense> {
           Container(
             width: 200.0,
             margin: EdgeInsets.symmetric(vertical: 16.0),
-            child: Text(
-              'You have Spend total 60% of you budget',
-              style: TextStyle(fontSize: 18.0),
-              textAlign: TextAlign.center,
-            ),
+            child: Builder(builder: (context) {
+              double totalSpent = getTotalSpent();
+              double percentageSpent = (totalSpent / expense.amount) * 100;
+              if (totalSpent == 0) {
+                return Container();
+              }
+              return Text(
+                'You have Spend total ${percentageSpent.toStringAsFixed(2)}% of you budget',
+                style: TextStyle(
+                    fontSize: 18.0,
+                    color: percentageSpent > 50 ? Colors.red : Colors.black),
+                textAlign: TextAlign.center,
+              );
+            }),
           ),
           // Expanded(
           Container(
