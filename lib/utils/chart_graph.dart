@@ -4,7 +4,9 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class ChartGraph extends StatefulWidget {
   final List<ExpenseBucket> expenseBuckets;
-  const ChartGraph({super.key, required this.expenseBuckets});
+  final double totalAmount;
+  const ChartGraph(
+      {super.key, required this.expenseBuckets, required this.totalAmount});
 
   @override
   State<ChartGraph> createState() => _ChartGraphState();
@@ -32,10 +34,12 @@ class _ChartGraphState extends State<ChartGraph> {
 
   List<GaugeRange> _buildRangePointers() {
     double cumulativeValue = 0;
-    double totalValue = widget.expenseBuckets.fold(0, (sum, bucket) {
-      print("sumBucket ${sum + bucket.totalExpenses}");
-      return sum + bucket.totalExpenses;
-    }); // Tổng giá trị của tất cả chi phí
+    double totalValue = widget.totalAmount;
+
+    // widget.expenseBuckets.fold(0, (sum, bucket) {
+    //   print("sumBucket ${sum + bucket.totalExpenses}");
+    //   return sum + bucket.totalExpenses;
+    // }); // Tổng giá trị của tất cả chi phí
     List<GaugeRange> ranges = [];
 
     widget.expenseBuckets.forEach((bucket) {
@@ -45,6 +49,7 @@ class _ChartGraphState extends State<ChartGraph> {
       }
       double endValue =
           cumulativeValue + (bucket.totalExpenses / totalValue) * 100;
+
       ranges.add(GaugeRange(
         startValue: cumulativeValue,
         endValue: endValue,
@@ -63,10 +68,7 @@ class _ChartGraphState extends State<ChartGraph> {
 
   List<GaugeAnnotation> _buildAnnotations() {
     double cumulativeValue = 0;
-    double totalValue = widget.expenseBuckets.fold(
-        0,
-        (sum, bucket) =>
-            sum + bucket.totalExpenses); // Tổng giá trị của tất cả chi phí
+    double totalValue = widget.totalAmount;
     List<GaugeAnnotation> annotations = [];
 
     widget.expenseBuckets.forEach((bucket) {

@@ -248,6 +248,7 @@ class _TotalexpenseState extends State<Totalexpense> {
                             height: 450, // Adjusted height for ChartGraph
                             child: ChartGraph(
                               expenseBuckets: getDailyExpenseBuckets(),
+                              totalAmount: expense.amount,
                             ),
                           ),
                         ),
