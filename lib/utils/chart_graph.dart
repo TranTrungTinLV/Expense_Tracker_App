@@ -41,7 +41,14 @@ class _ChartGraphState extends State<ChartGraph> {
     //   return sum + bucket.totalExpenses;
     // }); // Tổng giá trị của tất cả chi phí
     List<GaugeRange> ranges = [];
-
+    ranges.add(GaugeRange(
+      startValue: 0,
+      endValue: 100,
+      color: Colors.grey.shade300, // Background color for total amount
+      startWidth: 0.3,
+      endWidth: 0.3,
+      sizeUnit: GaugeSizeUnit.factor,
+    ));
     widget.expenseBuckets.forEach((bucket) {
       final color = _labelsForToday[bucket.category];
       if (color == null) {
