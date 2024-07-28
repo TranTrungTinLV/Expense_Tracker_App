@@ -7,8 +7,10 @@ class titleList extends StatefulWidget {
   titleList({
     super.key,
     required this.expense,
+    required this.onExpenseDeleted,
   });
   final List<Expense> expense;
+  final VoidCallback onExpenseDeleted; // Add this callback
 
   @override
   State<titleList> createState() => _titleListState();
@@ -36,6 +38,7 @@ class _titleListState extends State<titleList> {
                   print("Attempting to delete id: ${snapshot.data![index].id}");
                   String result =
                       await SQLHelper.delete(snapshot.data![index].id);
+                  widget.onExpenseDeleted();
                   print(result);
                   setState(() {});
                 } catch (e) {

@@ -179,6 +179,7 @@ class _HomePageState extends State<HomePage> {
                           padding: EdgeInsets.only(bottom: 30),
                           child: titleList(
                             expense: _registeredExpense,
+                            onExpenseDeleted: () {},
                           )))
                 ]),
               ),

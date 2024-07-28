@@ -41,6 +41,7 @@ class _TotalexpenseState extends State<Totalexpense> {
     setState(() {
       _registeredExpense.add(expense);
     });
+    _loadExpenses();
   }
 
   //function action add
@@ -225,6 +226,7 @@ class _TotalexpenseState extends State<Totalexpense> {
                         Container(
                             child: titleList(
                           expense: _registeredExpense,
+                          onExpenseDeleted: _loadExpenses,
                         )),
                         // SingleChildScrollView(
 
