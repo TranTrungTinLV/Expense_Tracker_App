@@ -40,7 +40,7 @@ CREATE TABLE tableExpenses (
     source TEXT,
     date NUMERIC,
     category TEXT CHECK( category IN ('Food','Advertising','Telephone', 'Travel', 'Work'))  NOT NULL DEFAULT 'Food',
-    FOREIGN KEY (category_id) REFERENCES tableCategories (id) ON DELETE CASCADE
+    FOREIGN KEY (category_id) REFERENCES tableCategories (id) 
 )
 ''');
     print('on create was called ');

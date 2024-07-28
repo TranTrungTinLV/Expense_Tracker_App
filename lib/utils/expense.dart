@@ -86,7 +86,9 @@ class ExpenseBucket {
 
     for (final expense in expenses) {
       sum += expense.amount;
+      print("sumBucketTotal ${sum}");
     }
+    print("sum ${sum}");
 
     return sum;
   }

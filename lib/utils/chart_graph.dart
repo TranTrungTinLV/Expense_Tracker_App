@@ -32,10 +32,10 @@ class _ChartGraphState extends State<ChartGraph> {
 
   List<GaugeRange> _buildRangePointers() {
     double cumulativeValue = 0;
-    double totalValue = widget.expenseBuckets.fold(
-        0,
-        (sum, bucket) =>
-            sum + bucket.totalExpenses); // Tổng giá trị của tất cả chi phí
+    double totalValue = widget.expenseBuckets.fold(0, (sum, bucket) {
+      print("sumBucket ${sum + bucket.totalExpenses}");
+      return sum + bucket.totalExpenses;
+    }); // Tổng giá trị của tất cả chi phí
     List<GaugeRange> ranges = [];
 
     widget.expenseBuckets.forEach((bucket) {
