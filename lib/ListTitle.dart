@@ -40,26 +40,31 @@ class _titleListState extends State<titleList> {
             return Center(child: Text('No expenses found'));
           }
           return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (ctx, index) => Dismissible(
-              key: UniqueKey(),
-              onDismissed: (direction) async {
-                try {
-                  print("Attempting to delete id: ${snapshot.data![index].id}");
-                  String result =
-                      await SQLHelper.delete(snapshot.data![index].id);
-                  widget.onExpenseDeleted();
-                  print(result);
-                  setState(() {});
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Failed to delete: $e')),
-                  );
+              itemCount: snapshot.data!.length,
+              itemBuilder: (ctx, index) {
+                if (index < 0 || index >= filteredExpenses.length) {
+                  return Container(); // Return an empty container if the index is invalid
                 }
-              },
-              child: ExpenseItems(filteredExpenses[index]),
-            ),
-          );
+                return Dismissible(
+                  key: UniqueKey(),
+                  onDismissed: (direction) async {
+                    try {
+                      print(
+                          "Attempting to delete id: ${snapshot.data![index].id}");
+                      String result =
+                          await SQLHelper.delete(snapshot.data![index].id);
+                      widget.onExpenseDeleted();
+                      print(result);
+                      setState(() {});
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Failed to delete: $e')),
+                      );
+                    }
+                  },
+                  child: ExpenseItems(filteredExpenses[index]),
+                );
+              });
         }
       },
     );
