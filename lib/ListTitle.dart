@@ -56,7 +56,7 @@ class _titleListState extends State<titleList> {
                       print(
                           "Attempting to delete id: ${snapshot.data![index].id}");
                       String result =
-                          await SQLHelper.delete(snapshot.data![index].id);
+                          await SQLHelper.delete(filteredExpenses[index].id);
                       widget.onExpenseDeleted();
                       print(result);
                       setState(() {});
