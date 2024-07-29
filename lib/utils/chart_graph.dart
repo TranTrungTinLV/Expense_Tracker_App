@@ -97,18 +97,14 @@ class _ChartGraphState extends State<ChartGraph> {
         // Only add annotation for non-zero values
         double endValue = cumulativeValue + percentage;
         annotations.add(GaugeAnnotation(
-          widget: Column(
-            children: [
-              Text(
-                '${percentage.toStringAsFixed(0)}%',
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFFB0B8BF)),
-              ),
-              Text("oo")
-            ],
+          widget: Text(
+            '${percentage.toStringAsFixed(0)}%',
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFB0B8BF)),
           ),
+
           angle: 180 + (cumulativeValue + endValue) / 2 * 1.8, // Adjust angle
           positionFactor: 1.2, // Adjust position factor
           horizontalAlignment: GaugeAlignment.center,
