@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:expense_tracker/screen/TotalExpense.dart';
 import 'package:expense_tracker/utils/categories_expense.dart';
 import 'package:flutter/material.dart';
@@ -71,11 +72,14 @@ class _EmptyCardState extends State<EmptyCard> {
                       ),
                     ],
                   )),
-              Text("${formatter.format(widget.expense.amount)}",
-                  style: TextStyle(
-                      fontSize: 24.0,
-                      letterSpacing: 0.32,
-                      color: Colors.black)),
+              AutoSizeText(
+                "${formatter.format(widget.expense.amount)}",
+                style: TextStyle(
+                    fontSize: 24.0, letterSpacing: 0.32, color: Colors.black),
+                maxLines: 1,
+                minFontSize: 8,
+                overflow: TextOverflow.ellipsis,
+              ),
             ],
           ),
         ),

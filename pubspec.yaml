@@ -45,6 +45,9 @@ dependencies:
   fl_chart: ^0.68.0
   syncfusion_flutter_gauges: ^26.1.42
   popover: ^0.3.0+1
+  awesome_notifications: ^0.9.3+1
+  auto_size_text: ^3.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

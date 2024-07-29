@@ -77,19 +77,37 @@ class _ChartGraphState extends State<ChartGraph> {
     double cumulativeValue = 0;
     double totalValue = widget.totalAmount;
     List<GaugeAnnotation> annotations = [];
-
+// Add a default annotation in the center
+    annotations.add(GaugeAnnotation(
+      widget: Container(
+        width: 20.0,
+        height: 20.0,
+        // padding: EdgeInsets.symmetric(vertical: 82, horizontal: 21),
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Color(0xffDCDFE3),
+            border: Border.all(color: Colors.white, width: 3.0)),
+      ),
+      angle: 270,
+      positionFactor: 0.0, // Center the annotation
+    ));
     widget.expenseBuckets.forEach((bucket) {
       double percentage = (bucket.totalExpenses / totalValue) * 100;
       if (percentage > 0) {
         // Only add annotation for non-zero values
         double endValue = cumulativeValue + percentage;
         annotations.add(GaugeAnnotation(
-          widget: Text(
-            '${percentage.toStringAsFixed(0)}%',
-            style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFB0B8BF)),
+          widget: Column(
+            children: [
+              Text(
+                '${percentage.toStringAsFixed(0)}%',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFB0B8BF)),
+              ),
+              Text("oo")
+            ],
           ),
           angle: 180 + (cumulativeValue + endValue) / 2 * 1.8, // Adjust angle
           positionFactor: 1.2, // Adjust position factor
