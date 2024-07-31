@@ -5,12 +5,8 @@ import 'package:expense_tracker/category_list.dart';
 import 'package:expense_tracker/new_totalExpense.dart';
 import 'package:expense_tracker/utils/categories_expense.dart';
 import 'package:expense_tracker/utils/expense.dart';
-// import 'package:expense_tracker/utils/expense.dart';
-// import 'package:expense_tracker/new_expense.dart';
 
-// import 'package:expense_tracker/screen/TotalExpense.dart';
 import 'package:flutter/material.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class HomePage extends StatefulWidget {
@@ -62,14 +58,14 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: IconButton(
-          onPressed: _openAddExpenseOverlay,
-          icon: Icon(
-            Icons.add,
-            color: Colors.black,
-            size: 35,
-          ),
-        ),
+        // floatingActionButton: IconButton(
+        //   onPressed: _openAddExpenseOverlay,
+        //   icon: Icon(
+        //     Icons.add,
+        //     color: Colors.black,
+        //     size: 35,
+        //   ),
+        // ),
         backgroundColor: const Color(0xFFF5F6F7),
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -111,9 +107,10 @@ class _HomePageState extends State<HomePage> {
             Container(
               padding: EdgeInsets.only(top: 30, bottom: 30),
               // scrollDirection: Axis.horizontal,
-              child: CategoryList(expense: _registeredCategories),
-              //   ],
-              // ),
+              child: CategoryList(
+                expense: _registeredCategories,
+                onTap: _openAddExpenseOverlay,
+              ),
             ),
             Expanded(
               child: Container(
